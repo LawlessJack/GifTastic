@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GifTastic</title>
+</head>
+
+<body>
+  
+  <div id = "buttonholder"></div>
+  
+  <div id="gifs-appear-here">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    var topics = ["planets", "sun", "stars", "galaxy", "supernova"]
+
+    for (var i=0; i<topics.length; i++){
+    var btn = $("<button>" + topics[i]+ "</button>")
+    $("#buttonholder").append(btn)
+    console.log(btn)
+    
+    }
+
+  </script>
+</body>
+
+</html>
