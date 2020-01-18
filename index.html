@@ -3,13 +3,14 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Favorite Movies</title>
+  <title>Celestial Objects</title>
   <style type="text/css">
     button,
     div,
     form,
     input {
-      margin: 5px; /*creates a space between the buttons*/
+      margin: 5px;
+      /*creates a space for readability*/
     }
   </style>
 </head>
@@ -18,30 +19,24 @@
 
   <div class="container">
 
-     <!-- Rendered Buttons will get Dumped Here  -->
+    <!-- Rendered Buttons will get Dumped Here  -->
     <div id="buttons-view"></div>
 
     <form id="topic-form">
       <label for="topic-input">Add a Celestial Object</label>
-      <input type="text" onfocus="this.value=''" id="topic-input"><br> 
+      <input type="text" onfocus="this.value=''" id="topic-input"><br>
 
       <!-- Button triggers new movie to be added -->
       <input id="add-topic" type="submit" value="Add Button">
     </form>
-    <div id="gifs-appear-here">
-    </div>
+    <div id="gifs-appear-here"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       // Initial array of movies
-      var topics= ["Planet", "Sun", "Galaxy", "Stars"];
+      var topics = ["Planet", "Sun", "Galaxy", "Stars"];
 
-      // Generic function for capturing the movie name from the data-attribute
-      function alertMovieName() {
-        //var movieName = $(this).attr("data-name");
-        var movieName = $(this).data("name");
-        alert(movieName);
-      }
+     
 
       // Function for displaying movie data
       function renderButtons() {
@@ -65,60 +60,90 @@
           // Adding the button to the HTML
           $("#buttons-view").append(a);
 
-          
-          $(a).on("click", function(event) {
-      var celestial = $(this).attr("data-name");
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        celestial + "&api_key=xmZh7YCYaq3sD0oB60jIswJw9HOr3Z8M&limit=5";
 
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
-        .then(function(response) {
-          var results = response.data;
-          console.log(response)
-          console.log(results)
+          $(a).on("click", function (event) {
+            $("#gifs-appear-here").empty();
+            var celestial = $(this).attr("data-name");
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+              celestial + "&api_key=xmZh7YCYaq3sD0oB60jIswJw9HOr3Z8M&limit=5";
 
-          for (var i = 0; i < results.length; i++) {
-            var gifDiv = $("<div>");
+            $.ajax({
+              url: queryURL,
+              method: "GET"
+            })
+              .then(function (response) {
+                var results = response.data;
 
-            var rating = results[i].rating;
+                for (var i = 0; i < results.length; i++) {
+                  var gifDiv = $("<div>");
 
-            var p = $("<p>").text("Rating: " + rating);
+                  var rating = results[i].rating;
 
-            var personImage = $("<img>");
-            personImage.attr("src", results[i].images.fixed_height.url);
+                  var p = $("<p>").text("Rating: " + rating);
 
-            gifDiv.prepend(p);
-            gifDiv.prepend(personImage);
+                  var celestialImage = $("<img>");
+                  celestialImage.attr("src", results[i].images.fixed_height_still.url);
+                  celestialImage.attr("data-still", results[i].images.fixed_height_still.url)
+                  celestialImage.attr("data-animate", results[i].images.fixed_height.url)
+                  celestialImage.attr("data-state", "still")
+                  celestialImage.addClass("gif")
 
-            $("#gifs-appear-here").prepend(gifDiv);
-          }
-        });
-    });
+                  gifDiv.prepend(p);
+                  gifDiv.prepend(celestialImage);
+
+
+                  $("#gifs-appear-here").prepend(gifDiv);
+
+                  $(".gif").on("click", function () {
+
+                    var state = $(this).attr("data-state")
+                   
+                    console.log("1st" +state)
+
+                    if (state === "still") {
+                      
+                     // console.log("we are in the if statement")
+                      var animateVal = $(this).attr("data-animate")
+                      $(this).attr("src", animateVal)
+                      $(this).attr("data-state", "animate")
+                  
+                      //console.log(animateVal)
+                      console.log("2nd" +state)
+                    }
+                    else {
+                      var stillVal = $(this).attr("data-still")
+                      $(this).attr("src", stillVal)
+                      $(this).attr("data-state", "still")
+                    }
+                  });
+
+                }
+              });
+          });
         }
       }
 
       // This function handles events where one button is clicked
-      $("#add-topic").on("click", function(event) {
+      $("#add-topic").on("click", function (event) {
         // Preventing the buttons default behavior when clicked (which is submitting a form)
         event.preventDefault();
         // This line grabs the input from the textbox
-        var movie = $("#topic-input").val().trim();
+        var entry = $("#topic-input").val().trim();
 
-        // Adding the movie from the textbox to our array
-        topics.push(movie);
+        // Adding the entry from the textbox to our array unless there is nothing typed in
+        if (entry.length >0){
+        topics.push(entry);}
 
         // Calling renderButtons which handles the processing of our movie array
         renderButtons();
-        
+
 
       });
-      
-      
+
+
+
       renderButtons();
-      
+
     </script>
   </div>
 </body>
