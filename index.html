@@ -65,7 +65,7 @@
             $("#gifs-appear-here").empty();
             var celestial = $(this).attr("data-name");
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-              celestial + "&api_key=xmZh7YCYaq3sD0oB60jIswJw9HOr3Z8M&limit=5";
+              celestial + "&api_key=xmZh7YCYaq3sD0oB60jIswJw9HOr3Z8M&limit=10";
 
             $.ajax({
               url: queryURL,
@@ -129,11 +129,7 @@
 
         // Calling renderButtons which handles the processing of our movie array
         renderButtons();
-
-
       });
-
-
 
       renderButtons();
 
