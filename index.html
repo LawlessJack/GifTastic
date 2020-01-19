@@ -36,7 +36,7 @@
       // Initial array of movies
       var topics = ["Planet", "Sun", "Galaxy", "Stars"];
 
-     
+
 
       // Function for displaying movie data
       function renderButtons() {
@@ -94,30 +94,22 @@
 
                   $("#gifs-appear-here").prepend(gifDiv);
 
-                  $(".gif").on("click", function () {
-
-                    var state = $(this).attr("data-state")
-                   
-                    console.log("1st" +state)
-
-                    if (state === "still") {
-                      
-                     // console.log("we are in the if statement")
-                      var animateVal = $(this).attr("data-animate")
-                      $(this).attr("src", animateVal)
-                      $(this).attr("data-state", "animate")
-                  
-                      //console.log(animateVal)
-                      console.log("2nd" +state)
-                    }
-                    else {
-                      var stillVal = $(this).attr("data-still")
-                      $(this).attr("src", stillVal)
-                      $(this).attr("data-state", "still")
-                    }
-                  });
-
                 }
+                $(".gif").on("click", function () {
+
+                  var state = $(this).attr("data-state")
+                  if (state === "still") {
+                    var animateVal = $(this).attr("data-animate")
+                    $(this).attr("src", animateVal)
+                    $(this).attr("data-state", "animate")
+                  }
+                  else {
+                    var stillVal = $(this).attr("data-still")
+                    $(this).attr("src", stillVal)
+                    $(this).attr("data-state", "still")
+
+                  }
+                });
               });
           });
         }
@@ -131,8 +123,9 @@
         var entry = $("#topic-input").val().trim();
 
         // Adding the entry from the textbox to our array unless there is nothing typed in
-        if (entry.length >0){
-        topics.push(entry);}
+        if (entry.length > 0) {
+          topics.push(entry);
+        }
 
         // Calling renderButtons which handles the processing of our movie array
         renderButtons();
